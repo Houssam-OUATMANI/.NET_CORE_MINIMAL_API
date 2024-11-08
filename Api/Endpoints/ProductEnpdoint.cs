@@ -28,8 +28,9 @@ public static class ProductEndpoint
         router.MapPost("/", (CreateProductDto createProductDto) =>
         {
             var (name, description, price) = createProductDto;
-            Products.Add(new ProductDto( Products.Count +1, name, description, price, DateTime.Now,  DateTime.Now));
-            return Results.Created(); 
+            var np = new ProductDto(Products.Count + 1, name, description, price, DateTime.Now, DateTime.Now);
+            Products.Add(np);
+            return Results.CreatedAtRoute("products.show", new {id = np.Id}, np); 
         }).WithName("products.store");
         
         
@@ -37,15 +38,14 @@ public static class ProductEndpoint
             {
                 var (name, description, price) = updateProductDto;
                 var index = Products.FindIndex(p => p.Id == id);
-
+                if (index == -1) return Results.NotFound(new { message = $"Product with id {id} was not found" });
+                
                 Products[index] = Products[index] with
                 {
                     Name = name, Description = description, Price = price, UpdatedAt = DateTime.Now
                 };
                 
-                return index == -1
-                    ? Results.NotFound(new { message = $"Product with id {id} was not found" })
-                    : Results.Ok(new {message = $"Product with id {id} was successfully updated" });
+                return Results.Ok(new {message = $"Product with id {id} was successfully updated" });
             }).WithName("products.update");
         
         
