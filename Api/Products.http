@@ -1,0 +1,40 @@
+@Api_Host = http://localhost:3000
+
+GET {{Api_Host}}/products
+Accept: application/json
+###
+
+GET {{Api_Host}}/products/1
+Accept: application/json
+###
+
+POST {{Api_Host}}/products/
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "name": "",
+  "description": "desc 3",
+  "price": 300
+}
+###
+
+PUT {{Api_Host}}/products/1
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "name": "title 1 updated!!!!!",
+  "description": "desc 1 updated!!!!",
+  "price": 300
+}
+###
+
+
+DELETE {{Api_Host}}/products/1
+Accept: application/json
+
+
+###
